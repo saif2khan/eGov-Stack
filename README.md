@@ -12,9 +12,9 @@ All the modules are part of the bigger eGov open source OS for governance - a co
 
 Samagra is a governance and development consulting entity. It works with political leaders and bureaucrats at multiple levels to create scalable impact. Samagra combines a top-down management consulting approach with a bottom-up understanding of the governance ecosystem, as well as leverages its technology and data expertise to deliver on its mandate.
 
-Our projects are spread across 8 states in India, with 18 separate engagements and 385+ govt. initiatives.
+Samagra's projects are spread across 8 states in India, with 18 separate engagements and 385+ govt. initiatives.
 
-You can find out more about us here: http://samagradevelopment.in/
+You can find out more about Samagra here: http://samagradevelopment.in/
 
 ### Vision:
 
