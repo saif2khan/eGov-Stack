@@ -5,50 +5,49 @@ eGov stack is a set of loosely related software modules that we hope enables any
 
 	All the modules are part of the bigger eGov open source OS for governance - a community initiative by Samagra.
 
-Use Cases:
-	<Copied from the func spec, made more user friendly>
+# Use Cases:
 
-Samagra:
-	Samagra is a governance and development consulting entity. It works with political leaders and bureaucrats at multiple levels to create scalable impact. Samagra combines a top-down management consulting approach with a bottom-up understanding of the governance ecosystem, as well as leverages its technology and data expertise to deliver on its mandate.
 
-	Our projects are spread across 8 states in India, with 18 separate engagements and 385+ govt. initiatives.
+# Samagra:
 
-	You can find out more about us here: http://samagradevelopment.in/
+Samagra is a governance and development consulting entity. It works with political leaders and bureaucrats at multiple levels to create scalable impact. Samagra combines a top-down management consulting approach with a bottom-up understanding of the governance ecosystem, as well as leverages its technology and data expertise to deliver on its mandate.
 
-Vision:
-	<SUKHPREET - positive spin on how data helps cut through graft and corruption, current examples>
+Our projects are spread across 8 states in India, with 18 separate engagements and 385+ govt. initiatives.
 
-Documentation:
+You can find out more about us here: http://samagradevelopment.in/
+
+# Vision:
+
+# Documentation:
 	Final Func Spec
 	Final Tech Spec
 	UI Guidelines
-	Separate Use Cases Doc
-	<Setup a wiki site on the Samagra domain?>
+	Use Cases
 
-Modules:
-
-
-Installation:
-	<Module dependant>
+# Modules:
 
 
-Contributing:
-	We welcome all contributions!
+# Installation:
 
-	Please file issues for any bugs you find or features you would like to see implemented.
 
-	To contribute directly - First, fork this repo. Clone the fork then add the original repo as a remote called 'prod':
-		$ git clone https://github.com/Samagra-Development/eGov-Stack.git
-		$ cd eGov-Stack
-		$ git remote add prod https://github.com/Samagra-Development/eGov-Stack.git
+# Contributing:
+We welcome all contributions!
 
-	Pull from prod frequently to keep your local copy up to date while you're coding:
-		$ git pull prod
+Please file issues for any bugs you find or features you would like to see implemented.
 
-	Send in a pull request once you're done making your awesome changes!
+To contribute directly - First, fork this repo. Clone the fork then add the original repo as a remote called 'prod':
+	$ git clone https://github.com/Samagra-Development/eGov-Stack.git
+	$ cd eGov-Stack
+	$ git remote add prod https://github.com/Samagra-Development/eGov-Stack.git
 
-Support:
-	Do you have any questions? Want to contribute but not sure how you can help? Send us an email at farnoosh@samagradevelopment.in or sukhpreet@samagradevelopment.in and we'll be happy to walk you through it right away.
+Pull from prod frequently to keep your local copy up to date while you're coding:
+	$ git pull prod
 
-License:
-	MIT License
+Send in a pull request once you're done making your awesome changes!
+
+# Support:
+Do you have any questions? Want to contribute but not sure how you can help? Send us an email at farnoosh@samagradevelopment.in or sukhpreet@samagradevelopment.in and we'll be happy to walk you through it right away.
+
+# License:
+
+MIT License
