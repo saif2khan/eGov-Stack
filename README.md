@@ -19,8 +19,8 @@ You can find out more about us here: http://samagradevelopment.in/
 ### Vision:
 
 ### Documentation:
-* Final Func Spec
-* Final Tech Spec
+* Overall Func Spec
+* Overall Tech Spec
 * UI Guidelines
 * Use Cases
 
