@@ -13,6 +13,8 @@ Governments and enterprises across the world are integrating data based solution
 
 Given the availability of field data, coupled with the focus of the governments on citizen welfare and bias for results, actionable analytics can play a pivotal role in reshaping decision making. From head of state level goal to task assignment of the field officer, everything can be linked by data. This will enable anyone to monitor progress with granular detail and most importantly perform root cause analysis at every stage. Several of these operations can also be made intelligent with recent advances in actionable analytics with machine learning and AI.
 
+With e-Gov stack, a junior developer in a Health Ministry will be able to build a dashboard that gives the Prime Minister live citizen feedback on the latest health emergency in less than a day.  It will take another few hours to build in functionality for citizens in affected areas to receive notifications tailored to the risks they face. The result: Better understanding, better decisions and saved lives. 
+
 ### Samagra:
 
 Samagra is a governance and development consulting entity. It works with political leaders and bureaucrats at multiple levels to create scalable impact. Samagra combines a top-down management consulting approach with a bottom-up understanding of the governance ecosystem, as well as leverages its technology and data expertise to deliver on its mandate.
@@ -35,6 +37,10 @@ We envisage a future where decisions which impact millions of lives can be taken
 
 ### Modules:
 
+1. Dashboards: tailored to visualise and represent the issues most critical to decision makers
+2. Data collection: power to bring together all forms of data collection, from digitising hand written forms, reading OMR sheets, converting IVRS responses to text, and text mining.
+3. Analytics: transform digital data into useful and actionable insights
+4. Notifications: designing data based triggers to keep stakeholders updated across different mediums SMS, emails, app based alerts
 
 ### Installation:
 
