@@ -5,8 +5,13 @@ Each module will be usable stand-alone as part of your workflow. Alternatively, 
 
 All the modules are part of the bigger eGov open source OS for governance - a community initiative by Samagra.
 
-### Use Cases:
+### Use Cases: 
 
+#### Dashboard module
+
+Governments and enterprises across the world are integrating data based solutions with their workstreams to increase efficiency and quality of operation. Annual reports are seeing a shift in trend from being demonstrative to statistical. MIS and analytics have emerged as an independent domain of specialization as well as profession. Citizens across the world are evaluating customer services at various levels and are adopting of web and mobile based applications. Every one of these interactions give rise to more data.
+
+Given the availability of field data, coupled with the focus of the governments on citizen welfare and bias for results, actionable analytics can play a pivotal role in reshaping decision making. From head of state level goal to task assignment of the field officer, everything can be linked by data. This will enable anyone to monitor progress with granular detail and most importantly perform root cause analysis at every stage. Several of these operations can also be made intelligent with recent advances in actionable analytics with machine learning and AI.
 
 ### Samagra:
 
@@ -16,7 +21,11 @@ Samagra's projects are spread across 8 states in India, with 18 separate engagem
 
 You can find out more about Samagra here: http://samagradevelopment.in/
 
-### Vision:
+### Vision: 
+
+#### Shaping the governments of tomorrow, together. 
+
+We envisage a future where decisions which impact millions of lives can be taken in seconds or minutes rather than weeks or months; where the best in class technology is freely available to any government anywhere in the world; and where that technology is built by citizens themselves.
 
 ### Documentation:
 * Overall Func Spec
