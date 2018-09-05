@@ -21,7 +21,7 @@ Samagra is a governance and development consulting entity. It works with politic
 
 Samagra's projects are spread across 8 states in India, with 18 separate engagements and 385+ govt. initiatives.
 
-You can find out more about Samagra here: http://samagradevelopment.in/
+You can find out more about Samagra here: http://samagragovernance.in/
 
 ### Vision: 
 
@@ -30,10 +30,7 @@ You can find out more about Samagra here: http://samagradevelopment.in/
 We envisage a future where decisions which impact millions of lives can be taken in seconds or minutes rather than weeks or months; where the best in class technology is freely available to any government anywhere in the world; and where that technology is built by citizens themselves.
 
 ### Documentation:
-* Overall Func Spec
-* Overall Tech Spec
-* UI Guidelines
-* Use Cases
+We're working hard on setting up a wiki with extensive documentation. Until then, please get in touch with us directly using the email ids below.
 
 ### Modules:
 
