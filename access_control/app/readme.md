@@ -10,8 +10,6 @@ Quickstart
 First, set your app's secret key as an environment variable. For example,
 add the following to ``.bashrc`` or ``.bash_profile``.
 
-.. code-block:: bash
-
     export AUTHENTICATE='something-really-secret'
 
 Before running shell commands, set the ``FLASK_APP`` and ``FLASK_DEBUG``
