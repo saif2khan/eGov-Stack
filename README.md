@@ -42,8 +42,6 @@ We envisage a future where decisions which impact millions of lives can be taken
 3. Analytics: transform digital data into useful and actionable insights
 4. Notifications: designing data based triggers to keep stakeholders updated across different mediums SMS, emails, app based alerts
 
-### Installation:
-
 
 ### Contributing:
 We welcome all contributions!
