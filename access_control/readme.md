@@ -1,5 +1,6 @@
-# App Setup Instructions for Deploy to Heroku
+# App Setup Instructions for Deploying to Heroku
 ##### (See further down for generic Ubuntu instructions)
+
 You will need the following ready in order to get this application running: 
 * A Heroku Account (https://www.heroku.com)
 * The Heroku CLI (command line interface) installed on your computer
@@ -85,11 +86,11 @@ It is recommended that a process monitoring service be utilized to make sure tha
 
 You can do this by running the following command from whatever directory you would like to clone the application into.
 
-```git clone https://gitlab.com/samagra-dev/adapt.git```
+```git clone https://github.com/Samagra-Development/eGov-Stack.git```
 
 Next navigate to the folder that was just created with the new files.
 
-```cd adapt```
+```cd egov_stack/access_control```
 
 Next, install the python required external libraries. To do this, create a new python virtual environment by running 
 
@@ -179,4 +180,4 @@ For basic information on how to do this, please reference the following guide: h
 
 # Using the App
 
-When using this ACL system for user authentication, please always be sure to check this system before modifying your data to make sure that the user in question has the appropriate permissions on the scope in question. 
+When using access_control for user authentication, please always be sure to verify with this service before modifying your data to make sure that the user in question has the appropriate permissions on the scope in question.
