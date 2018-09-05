@@ -5,7 +5,7 @@ This will module will handle:
 * Scope based access (e.g. Geographical scope: country level, state level, city level, etc.) with support to add additional scopes in a hierarchy (e.g. Country --> State -> District ==> anyone with access to Country can view data right down to the District level)
 * IP Whitelisting of trusted applications (e.g. an app called BACKEND_MAPPER will be authenticated to perform all actions if the call originates from a trusted ip address)
 
-# API:
+# API
 https://app.swaggerhub.com/apis/Samagra-Governance/api/1.0.0#/
 
 # App Setup Instructions for Deploying to Heroku
