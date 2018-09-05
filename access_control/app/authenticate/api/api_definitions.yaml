@@ -1,0 +1,1540 @@
+swagger: "2.0"
+info:
+  title: Authenticate
+  description: An API for managing Users, Roles, Scopes, Categories, and Authentication.
+  version: 1.0.0
+host: samagra.herokuapp.com
+basePath: /api/v1
+securityDefinitions:
+  basicAuth:
+    type: basic
+schemes:
+  - https
+consumes:
+  - multipart/form-data
+produces:
+  - application/json
+paths:
+  /auth/token:
+    get:
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      summary: Generates a token with a one hour expiration to use as the username (no password) in a basic authentication setup. This route requires a username:password basic authentication in order to generate the token.
+      responses:
+        200:
+          description: Will return wether user exists or not to prevent sniffing attacks
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                example: h0dfjsd9f09sSDFosdjoisdfsiojfd929jf01h0dfjsd9f09sdcvjx09cvj0
+  /auth/logout:
+    get:
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      summary: Invalidates the token being used.
+      responses:
+        200:
+          description: You will need to generate a new token
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: You have been logged out
+              is_successful:
+                type: boolean
+                example: true
+                
+  /public-auth/reset-password:
+    post:
+      produces:
+        - "application.json"
+      summary: Uses token to reset password.
+      parameters:
+        - in: query
+          name: token
+          type: string
+          description: The token received in the email used to reset the password. Must be included or will return 401
+      responses:
+        200:
+          description: The token was valid and the request worked
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: User updated successfully
+    get:
+      produces:
+        - "application/json"
+      summary: Generates a token for resetting the password and emails it to a user
+      parameters:
+        - in: query
+          name: email
+          type: string
+          description: The email address of the user requesting a password reset
+      responses:
+        202:
+          description: Will return wether user exists or not to prevent sniffing attacks
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Password reset initiated.
+  /public-auth/verify-email:
+    get:
+      produces:
+        - "application/json"
+      summary: Validates an authorization token that was emailed to a user to verify their email.
+      parameters:
+        - in: query
+          name: token
+          type: string
+          description: Token from the email delivered to the user
+      responses:
+        201:
+          description: Email was verified successfully
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Email verified.
+        404:
+          description: Returns if the token wasn't valid, or it was expired, or the user associated with the token no longer exists.
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Not Found.
+  /users:
+    post:
+      produces:
+        - "application/json"
+      summary: Creates a new user.
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: formData
+          name: username
+          type: string
+          description: A user's unique username.
+        - in: formData
+          name: first_name
+          type: string
+          description: A user's first name.
+        - in: formData
+          name: last_name
+          type: string
+          description: A user's last name.
+        - in: formData
+          name: email
+          type: string
+          description: A user's unique name.
+        - in: formData
+          name: mobile_number
+          type: string
+          description: A user's mobile number.
+        - in: formData
+          name: password
+          type: string
+          description: A user's password.
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: User added successfully.
+              user_id:
+                type: integer
+                example: 4
+    get:
+      security:
+        - basicAuth: []
+      summary: Returns a list of users.
+      produces:
+        - "application/json"
+      parameters:
+        - in: query
+          name: returnIdOnly
+          type: string
+          description: Set equal to true to return a list of user Id's only
+      description: This endpoint returns a list of users.
+      responses:
+        200:
+          description: A list of users
+          schema:
+            type: object
+            properties: 
+                users: 
+                  type: "array"
+                  items: 
+                    type: "object"
+                    properties: 
+                      is_root_admin: 
+                        type: "boolean"
+                        example: false
+                      username: 
+                        type: "string"
+                        example: "bobbysizzle"
+                      first_name: 
+                        type: "string"
+                        example: "Bobby"
+                      last_update: 
+                        type: "string"
+                        format: date-time
+                        example: "2018-06-19T19:52:32.011417"
+                      created_on: 
+                        type: "string"
+                        format: date-time
+                        example: "2018-06-19T19:52:32.011417"
+                      last_name: 
+                        type: "string"
+                        example: "Sizzle"
+                      email: 
+                        type: "string"
+                        example: "bobby@hismajesty.com"
+                      id: 
+                        type: "number"
+                        example: 2
+                      mobile_number: 
+                        type: "string"
+                        example: "5854849384"
+              
+  /user/{userId}:
+    delete:
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      summary: Marks a user as deleted in the database.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the user in the database.
+      responses:
+        200:
+          description: Created
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: User deleted successfully.
+              user_id:
+                type: integer
+                example: 4
+    post:
+      security:
+        - basicAuth: []
+      summary: Updates an existing user.
+      produces:
+        - "application/json"
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the user in the database.
+        - in: formData
+          name: username
+          type: string
+          description: A user's unique username.
+        - in: formData
+          name: first_name
+          type: string
+          description: A user's first name.
+        - in: formData
+          name: last_name
+          type: string
+          description: A user's last name.
+        - in: formData
+          name: email
+          type: string
+          description: A user's unique name.
+        - in: formData
+          name: mobile_number
+          type: string
+          description: A user's mobile number.
+        - in: formData
+          name: password
+          type: string
+          description: A user's password.
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: User updated successfully.
+              user_id:
+                type: integer
+                example: 4
+    get:
+      security:
+        - basicAuth: []
+      summary: Returns a user by ID.
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the user in the database.
+      responses:
+        200:
+          description: A User object.
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 4
+              username:
+                type: string
+                example: ArthurDent
+              is_deleted:
+                type: boolean
+                example: false
+              first_name:
+                type: string
+                example: Arthur
+              last_name:
+                type: string
+                example: Dent
+              last_update: 
+                type: "string"
+                format: date-time
+                example: "2018-06-19T19:52:32.011417"
+              created_on: 
+                type: "string"
+                format: date-time
+                example: "2018-06-19T19:52:32.011417"
+              email:
+                type: string
+                example: arthurd@gmail.com
+              email_verified:
+                type: boolean
+                example: true
+              mobile_number:
+                type: string
+                example: 5858378273
+              roles:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 18
+                    name:
+                      type: string
+                      example: READ
+                    scope_id:
+                      type: integer
+                      example: 8
+
+  /categories:
+    post:
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      summary: Creates a new category.
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: formData
+          name: name
+          type: string
+          description: A category name.
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Category added successfully.
+              category_id:
+                type: integer
+                example: 4
+        202:
+          description: Duplicate Category
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Category name already in use under category ID {}
+    get:
+      security:
+        - basicAuth: []
+      summary: Returns a list of categories.
+      produces:
+        - "application/json"
+      description: This endpoint returns a list of categories.
+      responses:
+        200:
+          description: A list of categories
+          schema:
+            type: object
+            properties: 
+                users: 
+                  type: "array"
+                  items: 
+                    type: "object"
+                    properties: 
+                      id: 
+                        type: "integer"
+                        example: 1
+                      name: 
+                        type: "string"
+                        example: "Bobby"
+                      last_update: 
+                        type: "string"
+                        format: date-time
+                        example: "2018-06-19T19:52:32.011417"
+                      created_on: 
+                        type: "string"
+                        format: date-time
+                        example: "2018-06-19T19:52:32.011417"
+              
+  /categories/{categoryId}:
+    delete:
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      summary: Deletes a category.
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the category in the database.
+      responses:
+        201:
+          description: Deleted
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Category deleted successfully.
+        202:
+          description: Cannot delete
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Cannot delete category. Please remove all attached scopes first.
+    post:
+      security:
+        - basicAuth: []
+      summary: Updates an existing category.
+      produces:
+        - "application/json"
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the category in the database.
+        - in: formData
+          name: name
+          type: string
+          description: A category name.
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Category added successfully.
+    get:
+      security:
+        - basicAuth: []
+      summary: Returns a category by ID.
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the user in the database.
+      responses:
+        200:
+          description: A Category object.
+          schema:
+            type: object
+            properties:
+              id: 
+                type: "integer"
+                example: 1
+              name: 
+                type: "string"
+                example: "Bobby"
+              last_update: 
+                type: "string"
+                format: date-time
+                example: "2018-06-19T19:52:32.011417"
+              created_on: 
+                type: "string"
+                format: date-time
+                example: "2018-06-19T19:52:32.011417"
+
+  
+                
+
+
+
+
+
+
+  /userScopeMappings:
+    post:
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      summary: Creates a new role a role assigns either ADMIN, READ, or READ-WRITE permission to a user for a specific scope.
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: formData
+          name: user_id
+          type: string
+          description: A user primary key.
+        - in: formData
+          name: scope_id
+          type: integer
+          description: A scope primary key.
+        - in: formData
+          name: role
+          type: string
+          description: A role for a user scope mapping.
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: User scope mapping added successfully.
+              scope_id:
+                type: integer
+                example: 4
+    get:
+      security:
+        - basicAuth: []
+      summary: Returns a list of user_scope_mappings.
+      produces:
+        - "application/json"
+      description: This endpoint returns a list of user_scope_mappings.
+      responses:
+        200:
+          description: A list of user_scope_mappings
+          schema:
+            type: object
+            properties: 
+                userScopeMappings: 
+                  type: "array"
+                  items: 
+                    type: "object"
+                    properties: 
+                      id: 
+                        type: "integer"
+                        example: 1
+                      scope_id: 
+                        type: "integer"
+                        example: 3
+                      role: 
+                        type: "string"
+                        example: "ADMIN"
+                      last_update: 
+                        type: "string"
+                        format: date-time
+                        example: "2018-06-19T19:52:32.011417"
+                      created_on: 
+                        type: "string"
+                        format: date-time
+                        example: "2018-06-19T19:52:32.011417"
+  /userScopeMappings/byUserId/{userId}:
+    get:
+        security:
+          - basicAuth: []
+        summary: Returns a user_scope_mapping by user Id.
+        produces:
+          - "application/json"
+        parameters:
+          - in: path
+            name: userId
+            required: true
+            type: integer
+            minimum: 1
+            description: The primary key for the user in the database.
+        responses:
+          200:
+            description: A list of user_scope_mappings
+            schema:
+              type: object
+              properties: 
+                userScopeMappings: 
+                  type: "array"
+                  items: 
+                    type: "object"
+                    properties: 
+                      id: 
+                        type: "integer"
+                        example: 1
+                      scope_id: 
+                        type: "integer"
+                        example: 3
+                      role: 
+                        type: "string"
+                        example: "ADMIN"
+                      last_update: 
+                        type: "string"
+                        format: date-time
+                        example: "2018-06-19T19:52:32.011417"
+                      created_on: 
+                        type: "string"
+                        format: date-time
+                        example: "2018-06-19T19:52:32.011417"       
+  /userScopeMappings/byScopeId/{scopeId}:
+    get:
+        security:
+          - basicAuth: []
+        summary: Returns a user_scope_mapping by scope Id.
+        produces:
+          - "application/json"
+        parameters:
+          - in: path
+            name: scopeId
+            required: true
+            type: integer
+            minimum: 1
+            description: The primary key for the scope in the database.
+        responses:
+          200:
+            description: A list of user_scope_mappings
+            schema:
+              type: object
+              properties: 
+                  userScopeMappings: 
+                    type: "array"
+                    items: 
+                      type: "object"
+                      properties: 
+                        id: 
+                          type: "integer"
+                          example: 1
+                        scope_id: 
+                          type: "integer"
+                          example: 3
+                        role: 
+                          type: "string"
+                          example: "ADMIN"
+                        last_update: 
+                          type: "string"
+                          format: date-time
+                          example: "2018-06-19T19:52:32.011417"
+                        created_on: 
+                          type: "string"
+                          format: date-time
+                          example: "2018-06-19T19:52:32.011417"
+  /userScopeMappings/byCategoryId/{categoryId}:
+    get:
+        security:
+          - basicAuth: []
+        summary: Returns a user_scope_mapping by category Id.
+        produces:
+          - "application/json"
+        parameters:
+          - in: path
+            name: categoryId
+            required: true
+            type: integer
+            minimum: 1
+            description: The primary key for the category in the database.
+        responses:
+          200:
+            description: A list of user_scope_mappings
+            schema:
+              type: object
+              properties: 
+                  userScopeMappings: 
+                    type: "array"
+                    items: 
+                      type: "object"
+                      properties: 
+                        id: 
+                          type: "integer"
+                          example: 1
+                        scope_id: 
+                          type: "integer"
+                          example: 3
+                        role: 
+                          type: "string"
+                          example: "ADMIN"
+                        last_update: 
+                          type: "string"
+                          format: date-time
+                          example: "2018-06-19T19:52:32.011417"
+                        created_on: 
+                          type: "string"
+                          format: date-time
+                          example: "2018-06-19T19:52:32.011417"
+  /userScopeMappings/{userScopeMappingId}:
+    delete:
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      summary: Deletes a user_scope_mapping.
+      parameters:
+        - in: path
+          name: userScopeMappingId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the user_scope_mapping in the database.
+      responses:
+        201:
+          description: Deleted
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: user_scope_mapping deleted successfully.
+        202:
+          description: Cannot delete
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Cannot delete user_scope_mapping. Remove other users first.
+    post:
+      security:
+        - basicAuth: []
+      summary: Updates an existing user_scope_mapping.
+      produces:
+        - "application/json"
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: path
+          name: userScopeMappingId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the user_scope_mapping in the database.
+        - in: formData
+          name: role
+          type: string
+          description: Name of the role - can be either READ, READ-WRITE, or ADMIN
+        - in: formData
+          name: scope_id
+          type: integer
+          description: A scope primary key.
+        - in: formData
+          name: user_id
+          type: integer
+          description: A user primary key.
+      responses:
+        201:
+          description: Updated
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Role updated successfully.
+    get:
+      security:
+        - basicAuth: []
+      summary: Returns a user_scope_mapping by ID.
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: userScopeMappingId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the user_scope_mapping in the database.
+      responses:
+        200:
+          description: A list of user_scope_mappings
+          schema:
+            type: object
+            properties: 
+                userScopeMappings: 
+                  type: "array"
+                  items: 
+                    type: "object"
+                    properties: 
+                      id: 
+                        type: "integer"
+                        example: 1
+                      scope_id: 
+                        type: "integer"
+                        example: 3
+                      role: 
+                        type: "string"
+                        example: "ADMIN"
+                      last_update: 
+                        type: "string"
+                        format: date-time
+                        example: "2018-06-19T19:52:32.011417"
+                      created_on: 
+                        type: "string"
+                        format: date-time
+                        example: "2018-06-19T19:52:32.011417"
+  /scopes:
+    post:
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      summary: Creates a new scope.
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: formData
+          name: name
+          type: string
+          description: A scope name.
+        - in: formData
+          name: parent_scope_id
+          type: integer
+          description: A parent scope primary key.
+        - in: formData
+          name: category_id
+          type: integer
+          description: A category primary key.
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Scope added successfully.
+              scope_id:
+                type: integer
+                example: 4
+        202:
+          description: Duplicate Scope
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Scope name already in use under scope ID {}
+    get:
+      security:
+        - basicAuth: []
+      summary: Returns a list of scopes.
+      produces:
+        - "application/json"
+      description: This endpoint returns a list of scopes.
+      parameters:
+        - in: query
+          name: treeView
+          type: string
+          description: If present scopes will be returned in a hierarchal model
+      responses:
+        200:
+          description: A list of scopes
+          schema:
+            type: object
+            properties: 
+              scopes: 
+                type: "array"
+                items: 
+                  type: "object"
+                  properties: 
+                    id: 
+                      type: "integer"
+                      example: 1
+                    parent_scope_id: 
+                      type: "integer"
+                      example: 3
+                    category_id: 
+                      type: "integer"
+                      example: 7
+                    name: 
+                      type: "string"
+                      example: "Bobby"
+                    last_update: 
+                      type: "string"
+                      format: date-time
+                      example: "2018-06-19T19:52:32.011417"
+                    created_on: 
+                      type: "string"
+                      format: date-time
+                      example: "2018-06-19T19:52:32.011417"
+
+  /scopes/{scopeId}:
+    delete:
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      summary: Deletes a scope.
+      parameters:
+        - in: path
+          name: scopeId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the scope in the database.
+      responses:
+        201:
+          description: Deleted
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Scope deleted successfully.
+        202:
+          description: Cannot delete
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Cannot delete scope. Please remove all attached roles and children scopes first.
+    post:
+      security:
+        - basicAuth: []
+      summary: Updates an existing scope.
+      produces:
+        - "application/json"
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: path
+          name: scopeId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the scope in the database.
+        - in: formData
+          name: name
+          type: string
+          description: A scope name.
+        - in: formData
+          name: parent_scope_id
+          type: integer
+          description: A parent scope primary key.
+        - in: formData
+          name: category_id
+          type: integer
+          description: A category primary key.
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Scope updated successfully.
+    get:
+      security:
+        - basicAuth: []
+      summary: Returns a scope by ID.
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: scopeId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the user in the database.
+      responses:
+        200:
+          description: A Scope object.
+          schema:
+            type: object
+            properties:
+              id: 
+                type: "integer"
+                example: 1
+              parent_scope_id: 
+                type: "integer"
+                example: 3
+              category_id: 
+                type: "integer"
+                example: 7
+              name: 
+                type: "string"
+                example: "Bobby"
+              last_update: 
+                type: "string"
+                format: date-time
+                example: "2018-06-19T19:52:32.011417"
+              created_on: 
+                type: "string"
+                format: date-time
+                example: "2018-06-19T19:52:32.011417"
+
+  /applications:
+    post:
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      summary: Creates a new application. Applications can access any endpoint without needing to send in basic auth credentials. To do this, each request must have a X-Application-Name header with a value equal to the application name (case sensitive). In addition, the request must originate from an IP address that has already been whitelisted.
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: formData
+          name: white_listed_ips
+          type: string
+          description: JSON array of IP's as strings
+        - in: formData
+          name: name
+          type: string
+          description: Name of the application
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Application added successfully.
+              application_id:
+                type: integer
+                example: 4
+        202:
+          description: Duplicate Application
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Application name already in use under scope ID {}
+    get:
+      security:
+        - basicAuth: []
+      summary: Returns a list of applications.
+      produces:
+        - "application/json"
+      description: This endpoint returns a list of applications.
+      responses:
+        200:
+          description: A list of applications
+          schema:
+            type: "object"
+            properties: 
+              applications: 
+                type: "array"
+                items: 
+                  type: "object"
+                  properties: 
+                    app_contexts:
+                      type: "array"
+                      items:
+                        type: "object"
+                        properties:
+                          context_credentials:
+                            type: "object"
+                            properties:
+                              key:
+                                type: "string"
+                                example: "DSFIJOIEJOEIJFODIJF"
+                              secret:
+                                type: "string"
+                                example: "23490810933232"
+                            description: "This can return any kind of object with any properties depending on the app context"
+                          id:
+                            type: "integer"
+                            example: 1
+                          name:
+                            type: "string"
+                            example: "Amazon s3 credentials"
+                          application_id:
+                            type: "integer"
+                            example: 19
+                          is_active:
+                            type: "boolean"
+                          last_update: 
+                            type: "string"
+                            format: date-time
+                            example: "2018-06-19T19:52:32.011417"
+                          created_on: 
+                            type: "string"
+                            format: date-time
+                            example: "2018-06-19T19:52:32.011417"
+                    id: 
+                      type: "integer"
+                      example: 1
+                    name: 
+                      type: "string"
+                      example: "Bobby"
+                    last_update: 
+                      type: "string"
+                      format: date-time
+                      example: "2018-06-19T19:52:32.011417"
+                    created_on: 
+                      type: "string"
+                      format: date-time
+                      example: "2018-06-19T19:52:32.011417"
+
+  /applications/{applicationId}:
+    delete:
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      summary: Deletes an application.
+      parameters:
+        - in: path
+          name: applicationId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the application in the database.
+      responses:
+        201:
+          description: Deleted
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Application deleted successfully.
+    post:
+      security:
+        - basicAuth: []
+      summary: Updates an existing application.
+      produces:
+        - "application/json"
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: path
+          name: applicationId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the applicationId in the database.
+        - in: formData
+          name: white_listed_ips
+          type: string
+          description: JSON array of IP's as strings
+        - in: formData
+          name: name
+          type: string
+          description: Name of the application
+      responses:
+        201:
+          description: Updated
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Application updated successfully.
+    get:
+      security:
+        - basicAuth: []
+      summary: Returns an application by ID.
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: applicationId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the application in the database.
+      responses:
+        200:
+          description: An Application object.
+          schema:
+            type: "object"
+            properties: 
+              app_contexts:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    context_credentials:
+                      type: "object"
+                      properties:
+                        key:
+                          type: "string"
+                          example: "DSFIJOIEJOEIJFODIJF"
+                        secret:
+                          type: "string"
+                          example: "23490810933232"
+                      description: "This can return any kind of object with any properties depending on the app context"
+                    id:
+                      type: "integer"
+                      example: 1
+                    name:
+                      type: "string"
+                      example: "Amazon s3 credentials"
+                    application_id:
+                      type: "integer"
+                      example: 19
+                    is_active:
+                      type: "boolean"
+                    last_update: 
+                      type: "string"
+                      format: date-time
+                      example: "2018-06-19T19:52:32.011417"
+                    created_on: 
+                      type: "string"
+                      format: date-time
+                      example: "2018-06-19T19:52:32.011417"
+              id: 
+                type: "integer"
+                example: 1
+              name: 
+                type: "string"
+                example: "Bobby"
+              last_update: 
+                type: "string"
+                format: date-time
+                example: "2018-06-19T19:52:32.011417"
+              created_on: 
+                type: "string"
+                format: date-time
+                example: "2018-06-19T19:52:32.011417"
+                  
+
+  /appContexts:
+    post:
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      summary: Creates a new application context, which is more or less credentials to access a 3rd party service like amazon s3.
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: formData
+          name: name
+          type: string
+          description: Name of the context
+        - in: formData
+          name: context_credentials
+          type: string
+          description: JSON object of any size with any number of keys. This is used for storing credentials and is encrypted in the database. 
+        - in: formData
+          name: application_id
+          type: integer
+          description: Primary key for the application that owns this Application Context 
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: App Context added successfully.
+              application_id:
+                type: integer
+                example: 4
+        202:
+          description: Duplicate App Context
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: App Context name already in use under scope ID {}
+    get:
+      security:
+        - basicAuth: []
+      summary: Returns a list of appContexts.
+      produces:
+        - "application/json"
+      description: This endpoint returns a list of appContexts.
+      responses:
+        200:
+          description: A list of appContexts
+          schema:
+            type: object
+            properties: 
+                app_contexts: 
+                  type: "array"
+                  items: 
+                    type: "object"
+                    properties: 
+                      context_credentials:
+                        type: "object"
+                        properties:
+                          key:
+                            type: "string"
+                            example: "DSFIJOIEJOEIJFODIJF"
+                          secret:
+                            type: "string"
+                            example: "23490810933232"
+                        description: "This can return any kind of object with any properties depending on the app context"
+                      id:
+                        type: "integer"
+                        example: 1
+                      name:
+                        type: "string"
+                        example: "Integrated App"
+                      context_name:
+                        type: "string"
+                        example: "Amazon S3 Credentials"
+                      application_id:
+                        type: "integer"
+                        example: 19
+                      is_active:
+                        type: "boolean"
+                      last_update: 
+                        type: "string"
+                        format: date-time
+                        example: "2018-06-19T19:52:32.011417"
+                      created_on: 
+                        type: "string"
+                        format: date-time
+                        example: "2018-06-19T19:52:32.011417"
+
+  /appContexts/{appContextId}:
+    delete:
+      security:
+        - basicAuth: []
+      produces:
+        - "application/json"
+      summary: Deletes an appContext.
+      parameters:
+        - in: path
+          name: appContextId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the appContext in the database.
+      responses:
+        201:
+          description: Deleted
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: appContext deleted successfully.
+    post:
+      security:
+        - basicAuth: []
+      summary: Updates an existing appContext.
+      produces:
+        - "application/json"
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: path
+          name: appContextId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the appContext in the database.
+        - in: formData
+          name: name
+          type: string
+          description: Name of the context
+        - in: formData
+          name: context_credentials
+          type: string
+          description: JSON object of any size with any number of keys. This is used for storing credentials and is encrypted in the database. 
+        - in: formData
+          name: application_id
+          type: integer
+          description: Primary key for the application that owns this Application Context 
+      responses:
+        201:
+          description: Updated
+          schema:
+            type: object
+            properties:
+              is_successful:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: appContext updated successfully.
+    get:
+      security:
+        - basicAuth: []
+      summary: Returns an application by ID.
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: appContextId
+          required: true
+          type: integer
+          minimum: 1
+          description: The primary key for the application context in the database.
+      responses:
+        200:
+          description: An AppContext object.
+          schema:
+            type: object
+            properties: 
+                context_credentials:
+                  type: "object"
+                  properties:
+                    key:
+                      type: "string"
+                      example: "DSFIJOIEJOEIJFODIJF"
+                    secret:
+                      type: "string"
+                      example: "23490810933232"
+                  description: "This can return any kind of object with any properties depending on the app context"
+                id:
+                  type: "integer"
+                  example: 1
+                name:
+                  type: "string"
+                  example: "Integrated App"
+                context_name:
+                  type: "string"
+                  example: "Amazon S3 Credentials"
+                application_id:
+                  type: "integer"
+                  example: 19
+                is_active:
+                  type: "boolean"
+                last_update: 
+                  type: "string"
+                  format: date-time
+                  example: "2018-06-19T19:52:32.011417"
+                created_on: 
+                  type: "string"
+                  format: date-time
+                  example: "2018-06-19T19:52:32.011417"
