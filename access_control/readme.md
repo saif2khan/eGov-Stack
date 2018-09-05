@@ -190,4 +190,4 @@ For basic information on how to do this, please reference the following guide: h
 
 # Using the App
 
-When using access_control for user authentication, please always be sure to verify with this service before modifying your data to make sure that the user in question has the appropriate permissions on the scope in question.
+When using access_control for user authentication, please always be sure to verify with this service before processing the request to make sure that the user in question has the appropriate permissions on the scope in question.
